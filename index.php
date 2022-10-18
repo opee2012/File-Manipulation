@@ -20,6 +20,7 @@ fclose($callListResouce);
 <html>
 <head>
     <title>Companies</title>
+    <link rel="icon" type="image/x-icon" href="https://lh3.googleusercontent.com/0LbGsNeNgpBHAIXuT8FZ-tDWBHkSb8ratEbbAVXz9I4MdocSF8Rdp2Yu5h89OHPPu6c">
 </head>
 <body> 
 <h1>Company Listing</h1>
