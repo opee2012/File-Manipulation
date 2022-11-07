@@ -80,3 +80,9 @@
         </table>
     </body>
 </html>
+
+
+
+HTML Forms
+
+if submit was add, rem, or mod, do that action 
