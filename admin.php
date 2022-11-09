@@ -90,7 +90,7 @@
             <tr>
                 <td><LABEL for="rem_comp">Choose a company:</LABEL></td>
                 <td>
-                <SELECT id="rem_comp" name="rem_comp" onchange="this.form.submit()">
+                <SELECT id="rem_comp" name="rem_comp">
                     <?php
                     $openFile = fopen("callList.csv", "a");
                     $csv = csvToArray();
@@ -100,8 +100,9 @@
                         echo "<option value=".$i.">".$option."</option>";
                     }
                     fclose($openFile);
+
+                    echo "<option name='rem_comp[$i]'></option>"
                     ?>
-                    <option name="rem_comp"></option>
                     </SELECT>
                 </td>
             </tr>
@@ -110,11 +111,14 @@
     </FORM>
         <?php
         $selected = $_POST['rem_comp'];
-        //$openFile = fopen("callList.csv", "w");
 
+        unset($csv[$selected]);
+        $openFile = fopen("callList.csv", "w");
 
-
-        //fclose($openFile);
+        foreach ($csv as $fields) {
+            fputcsv($openFile, $fields);
+        }
+        fclose($openFile);
         ?>
     <br>
     <FORM method="post" action="<?php echo $_SERVER["PHP_SELF"];?>">
