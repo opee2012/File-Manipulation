@@ -4,19 +4,21 @@
         <title>Companies</title>
     </head>
     <body>
-        <table>
         <?php
         $comp_name = $phone_num = "";
         $nameErr = $numberErr = "";
 
-        function test_input($data) {
+        function test_input($data): string
+        {
             $data = trim($data);
             $data = stripslashes($data);
             return htmlspecialchars($data);
         }
 
-        function csvToArray() {
+        function csvToArray(): array
+        {
             $file = fopen("callList.csv", 'r');
+            $j = 0;
             while (!feof($file)) {
                 $lines[] = fgetcsv($file, 1000, ',');
             }
@@ -24,25 +26,29 @@
             return $lines;
         }
 
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $comp_name = test_input($_POST["comp_name"]);
-            $error = 0;
-            // check if name only contains letters and whitespace
-            if (!preg_match("/^[a-zA-Z-' ]*$/",$comp_name)) {
-                $nameErr = "Only letters and whitespace allowed";
-                $error = 1;
-            }
-
             $phone_num = test_input($_POST["phone_num"]);
-            // check if name only contains letters and whitespace
-            if (!preg_match("/1-[0-9]{3}-[0-9]{3}-[0-9]{4}/",$phone_num)) {
-                $numberErr = "Incorrect format ex. 1-###-###-####";
+            $error = 0;
+
+            if (empty($comp_name) && empty($phone_num)) {
                 $error = 1;
+            } else {
+                // check if name only contains letters and whitespace
+                if (!preg_match("/^[a-zA-Z-' ]*$/",$comp_name)) {
+                    $nameErr = "Only letters and whitespace allowed";
+                    $error = 1;
+                }
+                // check if name only contains letters and whitespace
+                if (!preg_match("/1-[0-9]{3}-[0-9]{3}-[0-9]{4}/",$phone_num)) {
+                    $numberErr = "Incorrect format ex. 1-###-###-####";
+                    $error = 1;
+                }
             }
         }
         ?>
     <h2>Add, Remove, Modify Admin Page</h2>
-    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+    <FORM method="post" action="<?php echo $_SERVER["PHP_SELF"];?>">
         
     <h3>Add Entry</h3>
         <TABLE>
@@ -57,49 +63,63 @@
                 <td><SPAN style="color: red;font-style: italic"><?php echo $numberErr;?></SPAN></td>
             </tr>
         </TABLE>
-        <INPUT type="reset" value="Reset">
         <INPUT type="submit" value="Submit">
-        <br><br>
+        <INPUT type="reset" value="Reset">
+    </FORM>
         <?php
         // sanitize the var $_POST['name'] with a basic filter
-        $A = array(
+        $add_comp = array(
             filter_input(INPUT_POST, 'comp_name'),
             filter_input(INPUT_POST, 'phone_num')
         );
 
-        if ($A[0] != '' && $A[1] != '' && $error == 0) {
-            $openFile = fopen('callList.csv', 'a+');
+        if ($add_comp[0] != '' && $add_comp[1] != '' && $error == 0) {
+            $openFile = fopen('callList.csv', 'a');
 
             // append the sanitized input to our text file
-            $fp = fwrite($openFile, implode(',', $A). "\r\n");
+            fwrite($openFile, implode(',', $add_comp). "\r\n");
 
             fclose($openFile);
         }
         ?>
-    <h3>Remove Entry</h3>
-        <?php
-        $file = fopen("callList.csv", "a");
-        $csv = csvToArray();
-        ?>
-        <label for="companies">Choose a company: </label>
-        <select id="companies">
-            <?php
-            for ($i = 1; $i <= count($csv); $i++){
-                $option = $csv[$i-1][0];
-                echo "<option value='$i'>$option</option>";
-            }
-            ?>
-        </select>
-        <?php
+    <br><br>
+    <FORM method="post" action="<?php echo $_SERVER["PHP_SELF"];?>" >
 
+    <h3>Remove Entry</h3>
+        <TABLE>
+            <tr>
+                <td><LABEL for="rem_comp">Choose a company:</LABEL></td>
+                <td>
+                <SELECT id="rem_comp" name="rem_comp" onchange="this.form.submit()">
+                    <?php
+                    $openFile = fopen("callList.csv", "a");
+                    $csv = csvToArray();
+
+                    for ($i = 0; $i < count($csv)-1; $i++) {
+                        $option = $csv[$i][0];
+                        echo "<option value=".$i.">".$option."</option>";
+                    }
+                    fclose($openFile);
+                    ?>
+                    <option name="rem_comp"></option>
+                    </SELECT>
+                </td>
+            </tr>
+        </TABLE>
+        <INPUT type="submit" name="submit" value="Submit">
+    </FORM>
+        <?php
+        $selected = $_POST['rem_comp'];
+        //$openFile = fopen("callList.csv", "w");
+
+
+
+        //fclose($openFile);
         ?>
-    Modify Entry<br>
-        </table>
+    <br>
+    <FORM method="post" action="<?php echo $_SERVER["PHP_SELF"];?>">
+
+    <H3>Modify Entry</H3>
+    </FORM>
     </body>
 </html>
-
-
-
-HTML Forms
-
-if submit was add, rem, or mod, do that action 
