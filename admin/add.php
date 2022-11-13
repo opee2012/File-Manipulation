@@ -21,9 +21,7 @@
         $phone_num = test_input(filter_input(INPUT_POST, 'phone_num'));
         $error = 0;
 
-        $quoted_comp_name = str_replace("%quotes%", $comp_name, "\"%quotes%\"");
-
-        $add_comp = array($quoted_comp_name, $phone_num);
+        $add_comp = array($comp_name, $phone_num);
 
         // check if name only contains letters and whitespace
         if (!preg_match("/^[a-zA-Z-' ]*$/", $comp_name) || empty($comp_name)) {

@@ -27,13 +27,11 @@
                 <TD>
                     <SELECT id="rem_comp" name="rem_comp">
                         <?php
-                        $csv = csvToArray();
 
                         for ($i = 0; $i < count($csv)-1; $i++) {
                             $option = $csv[$i][0];
                             echo "<option value=$i>$option</option>";
                         }
-                        fclose($openFile);
                         ?>
                     </SELECT>
                 </TD>
@@ -43,14 +41,18 @@
     </FORM>
     <?php
     } elseif ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $rem_sel = $_POST['rem_comp'];
-        unset($csv[$rem_sel-1]);
-        $openFile = fopen("../callList.csv", "w");
+        $rem_sel = $_POST["rem_comp"];
+        if ($rem_sel < count($csv)) {
+            unset($csv[$rem_sel]);
+            $openFile = fopen("../callList.csv", "w");
 
-        foreach ($csv as $line) {
-            fputcsv($openFile, $line);
+            foreach ($csv as $line) {
+                fputcsv($openFile, $line);
+            }
+
+            fclose($openFile);
+            header("Location: ../admin.php");
         }
-        fclose($openFile);
     }
     ?>
     </BODY>
