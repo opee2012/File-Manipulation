@@ -27,7 +27,11 @@
             if (empty($phone_num)) $numberErr = "Company phone number is required";
             else $numberErr = "Incorrect format ex. 1-###-###-####";
             $error = 1;
-            //header(Location: add.php/urlencode());
+        }
+        if ($error == 1) {
+            $name_error = urlencode($nameErr);
+            $num_error = urlencode($numberErr);
+            header("Location: add.php?nameErr=$name_error&numberErr=$num_error");
         }
         if ($error == 0) {
             $openFile = fopen('../callList.csv', 'a');
@@ -38,11 +42,7 @@
             fclose($openFile);
             header("Location: ../admin.php");
         }
-    } else
-    {
-
-
-
+    } else {
     ?>
     <!DOCTYPE html>
     <HTML lang="en">
@@ -52,17 +52,17 @@
     </HEAD>
     <BODY>
     <H3>Add Entry</H3>
-    <FORM method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+    <FORM method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
         <TABLE>
             <tr>
                 <td><LABEL for="add_comp">Company Name:</LABEL></td>
                 <td><INPUT type="text" id="add_comp" name="comp_name"></td>
-                <td><SPAN class="error">* <?php echo $nameErr;?></SPAN></td>
+                <td><SPAN class="error">* <?php echo $_GET['nameErr'];?></SPAN></td>
             </tr>
             <tr>
                 <td><LABEL for="add_phone">Company Phone:</LABEL></td>
                 <td><INPUT type="text" id="add_phone" name="phone_num"></td>
-                <td><SPAN class="error" style=>* <?php echo $numberErr;//$_GET?></SPAN></td>
+                <td><SPAN class="error" style=>* <?php echo $_GET['numberErr'];?></SPAN></td>
                 <td
             </tr>
         </TABLE>

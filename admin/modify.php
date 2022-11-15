@@ -37,7 +37,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                 <TD>
                     <SELECT id="rem_comp" name="rem_comp">
                         <?php
-
                         for ($i = 0; $i < count($csv)-1; $i++) {
                             $option = $csv[$i][0];
                             echo "<option value=$i>$option</option>";
@@ -49,12 +48,12 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             <tr>
                 <td><LABEL for="add_comp">Company Name:</LABEL></td>
                 <td><INPUT type="text" id="add_comp" name="comp_name"></td>
-                <td><SPAN class="error">* <?php echo $nameErr;?></SPAN></td>
+                <td><SPAN class="error">* <?php echo $_GET['nameErr'];?></SPAN></td>
             </tr>
             <tr>
                 <td><LABEL for="add_phone">Company Phone:</LABEL></td>
                 <td><INPUT type="text" id="add_phone" name="phone_num"></td>
-                <td><SPAN class="error" style=>* <?php echo $numberErr;?></SPAN></td>
+                <td><SPAN class="error" style=>* <?php echo $_GET['numberErr'];?></SPAN></td>
                 <td
             </tr>
         </TABLE>
@@ -84,6 +83,11 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         if (empty($phone_num)) $numberErr = "Company phone number is required";
         else $numberErr = "Incorrect format ex. 1-###-###-####";
         $error = 1;
+    }
+    if ($error == 1) {
+        $name_error = urlencode($nameErr);
+        $num_error = urlencode($numberErr);
+        header("Location: modify.php?nameErr=$name_error&numberErr=$num_error");
     }
     if ($error == 0) {
         $csv[$mod_sel] = $add_comp;
