@@ -1,11 +1,4 @@
-<!DOCTYPE html>
-<HTML lang="en">
-    <HEAD>
-        <TITLE>Remove Companies</TITLE>
-    </HEAD>
-    <BODY>
-    <?php
-
+<?php
     function csvToArray(): array
     {
         $file = fopen("../callList.csv", 'r');
@@ -19,8 +12,14 @@
 
     if ($_SERVER["REQUEST_METHOD"] == "GET") {
     ?>
+<!DOCTYPE html>
+<HTML lang="en">
+<HEAD>
+    <TITLE>Remove Companies</TITLE>
+</HEAD>
+<BODY>
     <H3>Remove Entry</H3>
-    <FORM method="post" action="<?php echo $_SERVER["PHP_SELF"];?>">
+    <FORM method="POST" action="<?php echo $_SERVER["PHP_SELF"];?>">
         <TABLE>
             <TR>
                 <TD><LABEL for="rem_comp">Choose a company:</LABEL></TD>
@@ -39,6 +38,8 @@
         </TABLE>
         <input type="submit" value="Submit">
     </FORM>
+</BODY>
+        </HTML>
     <?php
     } elseif ($_SERVER["REQUEST_METHOD"] == "POST") {
         $rem_sel = $_POST["rem_comp"];
@@ -55,5 +56,3 @@
         }
     }
     ?>
-    </BODY>
-</HTML>

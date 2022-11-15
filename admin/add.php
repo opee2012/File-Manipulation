@@ -1,11 +1,4 @@
-<!DOCTYPE html>
-<HTML lang="en">
-    <HEAD>
-        <title>Add Companies</title>
-        <STYLE>.error {color: red; font-style: italic}</STYLE>
-    </HEAD>
-    <BODY>
-    <?php
+<?php
     $comp_name = $phone_num = "";
     $nameErr = $numberErr = "";
 
@@ -17,23 +10,28 @@
     }
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-        $comp_name = test_input(filter_input(INPUT_POST, 'comp_name'));
-        $phone_num = test_input(filter_input(INPUT_POST, 'phone_num'));
+        $comp_name = test_input($_POST['comp_name']);
+        $phone_num = test_input($_POST['phone_num']);
         $error = 0;
 
         $add_comp = array($comp_name, $phone_num);
 
         // check if name only contains letters and whitespace
         if (!preg_match("/^[a-zA-Z-' ]*$/", $comp_name) || empty($comp_name)) {
-            if (empty($_POST['comp_name'])) $nameErr = "Company name is required";
+            if (empty($comp_name)) $nameErr = "Company name is required";
             else $nameErr = "Only letters and whitespace allowed";
             $error = 1;
         }
         // check if name only contains letters and whitespace
         if (!preg_match("/1-[0-9]{3}-[0-9]{3}-[0-9]{4}/", $phone_num) || empty($phone_num)) {
-            if (empty($_POST['phone_num'])) $numberErr = "Company phone number is required";
+            if (empty($phone_num)) $numberErr = "Company phone number is required";
             else $numberErr = "Incorrect format ex. 1-###-###-####";
             $error = 1;
+        }
+        if ($error == 1) {
+            $name_error = urlencode($nameErr);
+            $num_error = urlencode($numberErr);
+            header("Location: add.php?nameErr=$name_error&numberErr=$num_error");
         }
         if ($error == 0) {
             $openFile = fopen('../callList.csv', 'a');
@@ -44,21 +42,27 @@
             fclose($openFile);
             header("Location: ../admin.php");
         }
-    }
-
+    } else {
     ?>
+    <!DOCTYPE html>
+    <HTML lang="en">
+    <HEAD>
+        <title>Add Companies</title>
+        <STYLE>.error {color: red; font-style: italic}</STYLE>
+    </HEAD>
+    <BODY>
     <H3>Add Entry</H3>
-    <FORM method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
-        <TABLE name="test">
+    <FORM method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+        <TABLE>
             <tr>
                 <td><LABEL for="add_comp">Company Name:</LABEL></td>
                 <td><INPUT type="text" id="add_comp" name="comp_name"></td>
-                <td><SPAN class="error">* <?php echo $nameErr;?></SPAN></td>
+                <td><SPAN class="error">* <?php echo $_GET['nameErr'];?></SPAN></td>
             </tr>
             <tr>
                 <td><LABEL for="add_phone">Company Phone:</LABEL></td>
                 <td><INPUT type="text" id="add_phone" name="phone_num"></td>
-                <td><SPAN class="error" style=>* <?php echo $numberErr;?></SPAN></td>
+                <td><SPAN class="error" style=>* <?php echo $_GET['numberErr'];?></SPAN></td>
                 <td
             </tr>
         </TABLE>
@@ -67,3 +71,7 @@
     </FORM>
     </BODY>
 </HTML>
+
+<?php
+    }
+?>
