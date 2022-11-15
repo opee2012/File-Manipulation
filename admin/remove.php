@@ -1,10 +1,4 @@
-<!DOCTYPE html>
-<HTML lang="en">
-    <HEAD>
-        <TITLE>Remove Companies</TITLE>
-    </HEAD>
-    <BODY>
-    <?php
+<?php
 
     function csvToArray(): array
     {
@@ -19,6 +13,12 @@
 
     if ($_SERVER["REQUEST_METHOD"] == "GET") {
     ?>
+<!DOCTYPE html>
+<HTML lang="en">
+<HEAD>
+    <TITLE>Remove Companies</TITLE>
+</HEAD>
+<BODY>
     <H3>Remove Entry</H3>
     <FORM method="post" action="<?php echo $_SERVER["PHP_SELF"];?>">
         <TABLE>
@@ -39,6 +39,8 @@
         </TABLE>
         <input type="submit" value="Submit">
     </FORM>
+</BODY>
+        </HTML>
     <?php
     } elseif ($_SERVER["REQUEST_METHOD"] == "POST") {
         $rem_sel = $_POST["rem_comp"];
@@ -55,5 +57,3 @@
         }
     }
     ?>
-    </BODY>
-</HTML>

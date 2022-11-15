@@ -1,11 +1,4 @@
-<!DOCTYPE html>
-<HTML lang="en">
-    <HEAD>
-        <title>Add Companies</title>
-        <STYLE>.error {color: red; font-style: italic}</STYLE>
-    </HEAD>
-    <BODY>
-    <?php
+<?php
     $comp_name = $phone_num = "";
     $nameErr = $numberErr = "";
 
@@ -25,13 +18,13 @@
 
         // check if name only contains letters and whitespace
         if (!preg_match("/^[a-zA-Z-' ]*$/", $comp_name) || empty($comp_name)) {
-            if (empty($_POST['comp_name'])) $nameErr = "Company name is required";
+            if (empty($comp_name)) $nameErr = "Company name is required";
             else $nameErr = "Only letters and whitespace allowed";
             $error = 1;
         }
         // check if name only contains letters and whitespace
         if (!preg_match("/1-[0-9]{3}-[0-9]{3}-[0-9]{4}/", $phone_num) || empty($phone_num)) {
-            if (empty($_POST['phone_num'])) $numberErr = "Company phone number is required";
+            if (empty($phone_num)) $numberErr = "Company phone number is required";
             else $numberErr = "Incorrect format ex. 1-###-###-####";
             $error = 1;
         }
@@ -44,9 +37,19 @@
             fclose($openFile);
             header("Location: ../admin.php");
         }
-    }
+    } else
+    {
+
+
 
     ?>
+    <!DOCTYPE html>
+    <HTML lang="en">
+    <HEAD>
+        <title>Add Companies</title>
+        <STYLE>.error {color: red; font-style: italic}</STYLE>
+    </HEAD>
+    <BODY>
     <H3>Add Entry</H3>
     <FORM method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
         <TABLE name="test">
@@ -67,3 +70,7 @@
     </FORM>
     </BODY>
 </HTML>
+
+<?php
+    }
+?>
