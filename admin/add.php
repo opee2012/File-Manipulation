@@ -10,8 +10,8 @@
     }
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-        $comp_name = test_input(filter_input(INPUT_POST, 'comp_name'));
-        $phone_num = test_input(filter_input(INPUT_POST, 'phone_num'));
+        $comp_name = test_input($_POST['comp_name']);
+        $phone_num = test_input($_POST['phone_num']);
         $error = 0;
 
         $add_comp = array($comp_name, $phone_num);
@@ -27,6 +27,7 @@
             if (empty($phone_num)) $numberErr = "Company phone number is required";
             else $numberErr = "Incorrect format ex. 1-###-###-####";
             $error = 1;
+            //header(Location: add.php/urlencode());
         }
         if ($error == 0) {
             $openFile = fopen('../callList.csv', 'a');
@@ -52,7 +53,7 @@
     <BODY>
     <H3>Add Entry</H3>
     <FORM method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
-        <TABLE name="test">
+        <TABLE>
             <tr>
                 <td><LABEL for="add_comp">Company Name:</LABEL></td>
                 <td><INPUT type="text" id="add_comp" name="comp_name"></td>
@@ -61,7 +62,7 @@
             <tr>
                 <td><LABEL for="add_phone">Company Phone:</LABEL></td>
                 <td><INPUT type="text" id="add_phone" name="phone_num"></td>
-                <td><SPAN class="error" style=>* <?php echo $numberErr;?></SPAN></td>
+                <td><SPAN class="error" style=>* <?php echo $numberErr;//$_GET?></SPAN></td>
                 <td
             </tr>
         </TABLE>
