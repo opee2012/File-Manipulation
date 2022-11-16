@@ -40,7 +40,9 @@
             fwrite($openFile, implode(',', $add_comp) . "\r\n");
 
             fclose($openFile);
-            header("Location: ../admin.php");
+
+            $confirmation = ($comp_name . " added to call list.");
+            header("Location: ../admin.php?confirmation=$confirmation");
         }
     } else {
     ?>
@@ -62,7 +64,7 @@
             <tr>
                 <td><LABEL for="add_phone">Company Phone:</LABEL></td>
                 <td><INPUT type="text" id="add_phone" name="phone_num"></td>
-                <td><SPAN class="error" style=>* <?php echo $_GET['numberErr'];?></SPAN></td>
+                <td><SPAN class="error">* <?php echo $_GET['numberErr'];?></SPAN></td>
                 <td
             </tr>
         </TABLE>

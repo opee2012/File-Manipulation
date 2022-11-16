@@ -43,6 +43,7 @@
     <?php
     } elseif ($_SERVER["REQUEST_METHOD"] == "POST") {
         $rem_sel = $_POST["rem_comp"];
+        $company = $csv[$rem_sel][0];
         if ($rem_sel < count($csv)) {
             unset($csv[$rem_sel]);
             $openFile = fopen("../callList.csv", "w");
@@ -54,5 +55,8 @@
             fclose($openFile);
             header("Location: ../admin.php");
         }
+
+        $confirmation = ($company . " removed from call list.");
+        header("Location: ../admin.php?confirmation=$confirmation");
     }
     ?>

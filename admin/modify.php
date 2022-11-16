@@ -33,9 +33,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     <FORM method="POST" action="<?php echo $_SERVER["PHP_SELF"];?>">
         <TABLE>
             <TR>
-                <TD><LABEL for="rem_comp">Choose a company:</LABEL></TD>
+                <TD><LABEL for="mod_comp">Choose a company:</LABEL></TD>
                 <TD>
-                    <SELECT id="rem_comp" name="rem_comp">
+                    <SELECT id="mod_comp" name="mod_comp">
                         <?php
                         for ($i = 0; $i < count($csv)-1; $i++) {
                             $option = $csv[$i][0];
@@ -46,13 +46,13 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                 </TD>
             </TR>
             <tr>
-                <td><LABEL for="add_comp">Company Name:</LABEL></td>
-                <td><INPUT type="text" id="add_comp" name="comp_name"></td>
+                <td><LABEL for="mod_comp">Company Name:</LABEL></td>
+                <td><INPUT type="text" id="mod_comp" name="comp_name"></td>
                 <td><SPAN class="error">* <?php echo $_GET['nameErr'];?></SPAN></td>
             </tr>
             <tr>
-                <td><LABEL for="add_phone">Company Phone:</LABEL></td>
-                <td><INPUT type="text" id="add_phone" name="phone_num"></td>
+                <td><LABEL for="mod_phone">Company Phone:</LABEL></td>
+                <td><INPUT type="text" id="mod_phone" name="phone_num"></td>
                 <td><SPAN class="error" style=>* <?php echo $_GET['numberErr'];?></SPAN></td>
                 <td
             </tr>
@@ -64,7 +64,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     </HTML>
 <?php
 } elseif ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $mod_sel = $_POST["rem_comp"];
+    $mod_sel = $_POST["mod_comp"];
+
+    $old_comp = $csv[$mod_sel][0];
+    $old_num = $csv[$mod_sel][1];
 
     $comp_name = test_input($_POST['comp_name']);
     $phone_num = test_input($_POST['phone_num']);
@@ -98,7 +101,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         }
 
         fclose($openFile);
-        header("Location: ../admin.php");
+
+        $comp_conf = ($old_comp . " changed to " . $comp_name . ".");
+        $num_conf = ($old_num . " changed to " . $phone_num . ".");
+        header("Location: ../admin.php?confirmation=$comp_conf&num_conf=$num_conf");
     }
 }
 ?>
