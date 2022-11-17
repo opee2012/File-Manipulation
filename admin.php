@@ -2,6 +2,7 @@
 <HTML lang="en">
     <HEAD>
         <title>Companies Admin Page</title>
+        <STYLE>.confirm {color: green; font-style: italic}</STYLE>
     </HEAD>
     <BODY>
     <H2>Add, Remove, Modify Admin Page</H2>
@@ -39,5 +40,9 @@
     ?>
     <BR>
     <a href="index.php">Back to homepage</a>
+    <BR>
+    <BR>
+    <SPAN class="confirm"><?php echo $_GET['confirmation'];?></SPAN><BR>
+    <SPAN class="confirm"><?php echo $_GET['num_conf'];?></SPAN>
     </BODY>
 </HTML>
